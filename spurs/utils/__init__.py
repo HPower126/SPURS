@@ -20,8 +20,16 @@ import torch
 from omegaconf import DictConfig, OmegaConf
 from pytorch_lightning import (Callback, LightningDataModule, LightningModule)
 from pytorch_lightning.utilities.seed import isolate_rng
-from pytorch_lightning.loggers import LightningLoggerBase, TensorBoardLogger
 from pytorch_lightning.utilities import rank_zero_only
+
+try:
+    # older Lightning
+    from pytorch_lightning.loggers import LightningLoggerBase, TensorBoardLogger
+except Exception:
+    # newer Lightning
+    from lightning.pytorch.loggers import Logger as LightningLoggerBase
+    from lightning.pytorch.loggers import TensorBoardLogger
+
 
 from . import strategies
 from .config import load_yaml_config, instantiate_from_config, resolve_experiment_config
