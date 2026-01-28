@@ -23,13 +23,12 @@ from pytorch_lightning.utilities.seed import isolate_rng
 from pytorch_lightning.utilities import rank_zero_only
 
 try:
-    # older Lightning
+    # Older Lightning (<=1.7-ish)
     from pytorch_lightning.loggers import LightningLoggerBase, TensorBoardLogger
 except Exception:
-    # newer Lightning
-    from lightning.pytorch.loggers import Logger as LightningLoggerBase
-    from lightning.pytorch.loggers import TensorBoardLogger
-
+    # Newer pytorch-lightning (>=1.8-ish)
+    from pytorch_lightning.loggers import Logger as LightningLoggerBase
+    from pytorch_lightning.loggers import TensorBoardLogger
 
 from . import strategies
 from .config import load_yaml_config, instantiate_from_config, resolve_experiment_config
@@ -156,7 +155,7 @@ def log_hyperparameters(
     datamodule: pl.LightningDataModule,
     trainer: pl.Trainer,
     callbacks: List[pl.Callback],
-    logger: List[pl.loggers.LightningLoggerBase],
+    logger: List[LightningLoggerBase],
 ) -> None:
     """Controls which config parts are saved by Lightning loggers.
 
@@ -203,7 +202,7 @@ def finish(
     datamodule: pl.LightningDataModule,
     trainer: pl.Trainer,
     callbacks: List[pl.Callback],
-    logger: List[pl.loggers.LightningLoggerBase],
+    logger: List[LightningLoggerBase],
 ) -> None:
     """Makes sure everything closed properly."""
 

@@ -5,9 +5,14 @@ from pytorch_lightning.strategies import StrategyRegistry
 from pytorch_lightning.strategies.sharded import DDPShardedStrategy
 from torch.optim import Optimizer
 
-from pytorch_lightning.utilities.imports import _FAIRSCALE_AVAILABLE
+def _fairscale_available() -> bool:
+    try:
+        import fairscale  # noqa: F401
+        return True
+    except Exception:
+        return False
 
-if _FAIRSCALE_AVAILABLE:
+if _fairscale_available():
     from fairscale.optim import OSS
 
     class DDPShardedFBOStrategy(DDPShardedStrategy):
